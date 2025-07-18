@@ -1,0 +1,50 @@
+﻿using Application.DTO.Result;
+using Domain.Enums;
+using Microsoft.AspNetCore.Mvc;
+
+namespace API.Controllers
+{
+    public class BaseController<TService> : ControllerBase
+    {
+        protected readonly TService _service;
+
+        public BaseController(TService service)
+        {
+            _service = service;
+        }
+
+        protected IActionResult GetResponse(MethodResult methodResult)
+        {
+            if (methodResult == null)
+            {
+                return BadRequest();
+            }
+
+            return methodResult.ResultType switch
+            {
+                MethodResultType.Success => Ok(),
+                MethodResultType.ValidationError => BadRequest(methodResult.Error),
+                MethodResultType.NotFound => NotFound(methodResult.Error),
+                MethodResultType.InternalError => StatusCode(500, methodResult.Error),
+                _ => StatusCode(500, "Unknown error type")
+            };
+        }
+
+        protected IActionResult GetResponse<T>(MethodResult<T> methodResult)
+        {
+            if (methodResult == null)
+            {
+                return BadRequest();
+            }
+
+            return methodResult.ResultType switch
+            {
+                MethodResultType.Success => Ok(methodResult.Value),
+                MethodResultType.ValidationError => BadRequest(methodResult.Error),
+                MethodResultType.NotFound => NotFound(methodResult.Error),
+                MethodResultType.InternalError => StatusCode(500, methodResult.Error),
+                _ => StatusCode(500, "Unknown error type")
+            };
+        }
+    }
+}
