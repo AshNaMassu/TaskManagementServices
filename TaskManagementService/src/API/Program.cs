@@ -11,6 +11,8 @@ builder.ConfigureLogger()
 
 var app = builder.Build();
 
+app.ApplyMigration();
+
 app.UseSerilogRequestLogging();
 
 if (app.Environment.IsDevelopment())

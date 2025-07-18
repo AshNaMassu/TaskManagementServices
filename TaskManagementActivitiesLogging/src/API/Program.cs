@@ -10,6 +10,7 @@ builder.ConfigureLogger()
 
 var app = builder.Build();
 
+app.ApplyMigration();
 
 if (app.Environment.IsDevelopment())
 {

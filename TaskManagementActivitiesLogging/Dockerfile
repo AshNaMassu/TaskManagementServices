@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS base
 WORKDIR /app
 EXPOSE 80
 EXPOSE 8081
@@ -27,10 +27,4 @@ FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
 
-COPY ./entrypoint.sh /app/entrypoint.sh
-RUN ls -la /app
-RUN chmod u+x /app/entrypoint.sh
-
-USER $APP_UID
-
-ENTRYPOINT ["/app/entrypoint.sh"]
+ENTRYPOINT ["dotnet", "API.dll"]
