@@ -3,7 +3,7 @@
 Проект реализует API для управления задачами пользователя на основе .NET 8 с использованием Entity Framework Core и PostgreSQL.
 Система состоит из двух сервисов: 
 - **TaskManagementService** - создание, изменение, удаление и просмотр задач пользователя. При создании/изменении/удалении задачи отправляет сообщея об изменившйся сущности как по синхронно (Http), так и асинхронно (KafkaProducer). Режим отправки сообщений задается в настройках сервиса параметром.
-```json
+```bash
 LogSender": "kafka" //kafka or http
 ```
 Принимающим значения: *kafka* - для асинхронной передачи. Отсутвие настройки или указание параметра отличного от *kafka* приведет к синхронной отправке сообщений.
@@ -41,7 +41,7 @@ LogSender": "kafka" //kafka or http
 
 
 
-📁 Миграции
+## 📁 Миграции
 Миграции применяются автоматически при старте приложения:
 ```csharp
 public static IApplicationBuilder ApplyMigration(this WebApplication app)
@@ -61,7 +61,7 @@ public static IApplicationBuilder ApplyMigration(this WebApplication app)
 dotnet ef migrations add InitialCreate --project src/Persistence/Persistence.csproj --startup-project src/API/API.csproj --context DataBaseContext
 ```
 
-📎 Конфигурация
+## 📎 Конфигурация
 Настройки подключения к БД находятся в appsettings.json:
 ```json
 "ConnectionStrings": {
@@ -69,8 +69,15 @@ dotnet ef migrations add InitialCreate --project src/Persistence/Persistence.csp
   }
 ```
 
-🧪 Docker Compose
-Запускает проекты TaskManagementService и TaskManagementActivitiesLogging, базу данных PostgreSQL, брокер сообщений Kafka:
+## 🧪 Docker Compose
+- Перейти в корневую директорию, где содержится файл docker-compose.yml
+- Выполнить команды
+```bash
+docker-compose build
+docker-compose up
+```
+
+- Запускает проекты TaskManagementService и TaskManagementActivitiesLogging, базу данных PostgreSQL, брокер сообщений Kafka:
 ```yaml
 version: '3.8'
 

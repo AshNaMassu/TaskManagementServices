@@ -13,7 +13,7 @@ namespace API.Controllers
             _service = service;
         }
 
-        protected IActionResult GetResponse(MethodResult methodResult)
+        protected IActionResult GetResponse(MethodResult methodResult, MethodType? type = null)
         {
             if (methodResult == null)
             {
@@ -22,7 +22,7 @@ namespace API.Controllers
 
             return methodResult.ResultType switch
             {
-                MethodResultType.Success => Ok(),
+                MethodResultType.Success => type.HasValue ? type.Value == MethodType.Create ? Created() : NoContent() : Ok(),
                 MethodResultType.ValidationError => BadRequest(methodResult.Error),
                 MethodResultType.NotFound => NotFound(methodResult.Error),
                 MethodResultType.InternalError => StatusCode(500, methodResult.Error),
@@ -30,7 +30,7 @@ namespace API.Controllers
             };
         }
 
-        protected IActionResult GetResponse<T>(MethodResult<T> methodResult)
+        protected IActionResult GetResponse<T>(MethodResult<T> methodResult, MethodType? type = null)
         {
             if (methodResult == null)
             {
@@ -39,12 +39,18 @@ namespace API.Controllers
 
             return methodResult.ResultType switch
             {
-                MethodResultType.Success => Ok(methodResult.Value),
+                MethodResultType.Success => type.HasValue ? type.Value == MethodType.Create ? Created(methodResult.Value) : NoContent() : Ok(methodResult.Value),
                 MethodResultType.ValidationError => BadRequest(methodResult.Error),
                 MethodResultType.NotFound => NotFound(methodResult.Error),
                 MethodResultType.InternalError => StatusCode(500, methodResult.Error),
                 _ => StatusCode(500, "Unknown error type")
             };
+        }
+
+        protected enum MethodType
+        {
+            Create,
+            Delete
         }
     }
 }
