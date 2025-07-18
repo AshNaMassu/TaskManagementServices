@@ -59,7 +59,7 @@ namespace API.Controllers
         /// Создает новую задачу
         /// </summary>
         /// <param name="request">Данные для создания задачи</param>
-        /// <returns>Идентификатор созданной задачи</returns>
+        /// <returns>Статус созданной задачи</returns>
         /// <response code="201">Задача успешно создана</response>
         /// <response code="400">Некорректные данные задачи</response>
         /// <response code="500">Внутренняя ошибка сервера</response>

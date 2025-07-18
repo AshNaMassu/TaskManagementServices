@@ -39,7 +39,7 @@ namespace API.Controllers
 
             return methodResult.ResultType switch
             {
-                MethodResultType.Success => type.HasValue ? type.Value == MethodType.Create ? Created(methodResult.Value) : NoContent() : Ok(methodResult.Value),
+                MethodResultType.Success => type.HasValue ? type.Value == MethodType.Create ? Created() : NoContent() : Ok(methodResult.Value),
                 MethodResultType.ValidationError => BadRequest(methodResult.Error),
                 MethodResultType.NotFound => NotFound(methodResult.Error),
                 MethodResultType.InternalError => StatusCode(500, methodResult.Error),

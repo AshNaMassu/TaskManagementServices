@@ -26,7 +26,7 @@ public class ActivityLogController : BaseController<IActivityLogService>
     /// Создает новую запись в логе активности
     /// </summary>
     /// <param name="request">Данные для создания записи</param>
-    /// <returns>Результат операции с ID созданной записи</returns>
+    /// <returns>Статус создания записи</returns>
     /// <response code="201">Запись успешно создана</response>
     /// <response code="400">Ошибка валидации данных</response>
     /// <response code="500">Внутренняя ошибка сервера</response>
@@ -36,8 +36,8 @@ public class ActivityLogController : BaseController<IActivityLogService>
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> Create(CreateActivityLogRequest request)
     {
-        var result = await _service.CreateAsync(request, MethodType.Create);
-        return GetResponse(result);
+        var result = await _service.CreateAsync(request);
+        return GetResponse(result, MethodType.Create);
     }
 
     /// <summary>
