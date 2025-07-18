@@ -42,6 +42,9 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - KafkaConfigurationOptions__BootstrapServers=kafka:9093
       - ConnectionStrings__DefaultConnection=Host=db;Port=5432;Database=activities_logging;Username=postgres;Password=3216733
+    depends_on:
+      db:
+        condition: service_healthy
     networks:
       - app-network
 
@@ -56,6 +59,9 @@ services:
       - KafkaConfigurationOptions__BootstrapServers=kafka:9093
       - ITaskManagementActivitiesLoggingHttpClient=http://task-management-activities-logging:80
       - ConnectionStrings__DefaultConnection=Host=db;Port=5432;Database=activities_logging;Username=postgres;Password=3216733
+    depends_on:
+      db:
+        condition: service_healthy
     networks:
       - app-network
 
@@ -69,3 +75,8 @@ services:
     - "5432:5432"
     networks:
     - app-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d activities_logging"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
