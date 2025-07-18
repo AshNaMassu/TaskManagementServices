@@ -1,50 +1,24 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
-using Npgsql;
-using Persistence.Configurations;
+using Microsoft.Extensions.Configuration;
 
 namespace Persistence.Database.Context
 {
     public class DbContextFactory : IDbContextFactory
     {
-        private readonly string _postgresConnectionString;
+        private readonly IConfiguration _configuration;
 
-        public DbContextFactory(IOptions<PostgresDatabaseOptions> postgresOptions)
+        public DbContextFactory(IConfiguration configuration)
         {
-            var postgreDatabaseOptions = postgresOptions.Value;
-            if (!string.IsNullOrEmpty(postgreDatabaseOptions.Host))
-            {
-                _postgresConnectionString = BuildPostgreSqlConnectionString(postgreDatabaseOptions);
-            }
+            _configuration = configuration;
         }
 
         public DataBaseContext CreateDbContext()
         {
+            string connectionString = _configuration.GetConnectionString("DefaultConnection");
             var optionsBuilder = new DbContextOptionsBuilder<DataBaseContext>();
-            optionsBuilder.UseNpgsql(_postgresConnectionString);
-
+            optionsBuilder.UseNpgsql(connectionString);
 
             return new DataBaseContext(optionsBuilder.Options);
-        }
-
-        private string BuildPostgreSqlConnectionString(PostgresDatabaseOptions options)
-        {
-            var connectionStringBuilder = new NpgsqlConnectionStringBuilder()
-            {
-                Host = options.Host,
-                Port = options.Port,
-                SearchPath = options.Schema,
-                Database = options.Name,
-                Username = options.User,
-                Password = options.Password,
-                CommandTimeout = options.CommandTimeout,
-                ConnectionIdleLifetime = options.ConnectionIdLifetime,
-                Pooling = options.Pooling,
-                KeepAlive = options.KeepAlive,
-                TcpKeepAlive = options.TcpKeepAlive
-            };
-
-            return connectionStringBuilder.ConnectionString;
         }
     }
 }

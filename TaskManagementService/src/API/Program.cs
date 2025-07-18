@@ -4,7 +4,6 @@ using Serilog;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.ConfigureLogger()
-       .ConfigureOptions()
        .ConfigureAPI()
        .AddApplication()
        .AddInfrastructure()
