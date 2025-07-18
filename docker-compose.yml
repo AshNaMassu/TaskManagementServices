@@ -1,4 +1,37 @@
+version: '3.8'
+
+networks:
+  app-network:
+    driver: bridge
+
 services:
+  zookeeper:
+    image: wurstmeister/zookeeper:latest
+    ports:
+      - "2181:2181"
+    networks:
+      - app-network
+
+  kafka:
+    image: wurstmeister/kafka:latest
+    ports:
+      - "9092:9092"
+    expose:
+      - "9093"
+    environment:
+      KAFKA_ADVERTISED_LISTENERS: INSIDE://kafka:9093,OUTSIDE://localhost:9092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INSIDE:PLAINTEXT,OUTSIDE:PLAINTEXT
+      KAFKA_LISTENERS: INSIDE://0.0.0.0:9093,OUTSIDE://0.0.0.0:9092
+      KAFKA_INTER_BROKER_LISTENER_NAME: INSIDE
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_CREATE_TOPICS: "activity-log-topic:1:1"
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "false"
+      KAFKA_CFG_AUTO_CREATE_TOPICS_ENABLE: "false"
+    networks:
+      - app-network
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+
   task-management-activities-logging:
     build:
       context: ./TaskManagementActivitiesLogging
@@ -7,6 +40,8 @@ services:
       - "5176:80"
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
+      - KafkaConfigurationOptions__BootstrapServers=kafka:9093
+      - PostgresDatabaseOptions__Host=db
     networks:
       - app-network
 
@@ -18,9 +53,19 @@ services:
       - "5175:80"
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
+      - KafkaConfigurationOptions__BootstrapServers=kafka:9093
+      - ITaskManagementActivitiesLoggingHttpClient=http://task-management-activities-logging:80
+      - PostgresDatabaseOptions__Host=db
     networks:
       - app-network
 
-networks:
-  app-network:
-    driver: bridge
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 3216733
+      POSTGRES_DB: activities_logging
+    ports:
+    - "5432:5432"
+    networks:
+    - app-network
