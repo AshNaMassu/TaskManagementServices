@@ -41,7 +41,7 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - KafkaConfigurationOptions__BootstrapServers=kafka:9093
-      - PostgresDatabaseOptions__Host=db
+      - ConnectionStrings__DefaultConnection=Host=db;Port=5432;Database=activities_logging;Username=postgres;Password=3216733
     networks:
       - app-network
 
@@ -55,7 +55,7 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - KafkaConfigurationOptions__BootstrapServers=kafka:9093
       - ITaskManagementActivitiesLoggingHttpClient=http://task-management-activities-logging:80
-      - PostgresDatabaseOptions__Host=db
+      - ConnectionStrings__DefaultConnection=Host=db;Port=5432;Database=activities_logging;Username=postgres;Password=3216733
     networks:
       - app-network
 
