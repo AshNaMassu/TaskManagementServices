@@ -1,0 +1,26 @@
+services:
+  task-management-activities-logging:
+    build:
+      context: ./TaskManagementActivitiesLogging
+      dockerfile: Dockerfile
+    ports:
+      - "5176:80"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    networks:
+      - app-network
+
+  task-management-service:
+    build:
+      context: ./TaskManagementService
+      dockerfile: Dockerfile
+    ports:
+      - "5175:80"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
