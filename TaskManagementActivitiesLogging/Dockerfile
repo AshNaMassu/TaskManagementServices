@@ -1,5 +1,4 @@
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
-USER $APP_UID
 WORKDIR /app
 EXPOSE 80
 EXPOSE 8081
@@ -27,4 +26,11 @@ RUN dotnet publish "src/API/API.csproj" -c $BUILD_CONFIGURATION -o /app/publish 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "API.dll"]
+
+COPY ./entrypoint.sh /app/entrypoint.sh
+RUN ls -la /app
+RUN chmod u+x /app/entrypoint.sh
+
+USER $APP_UID
+
+ENTRYPOINT ["/app/entrypoint.sh"]
