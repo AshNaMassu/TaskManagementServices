@@ -3,6 +3,9 @@ using FluentValidation;
 
 namespace API.Validators.ActivityLogValidators
 {
+    /// <summary>
+    /// Валидатор для запроса создания задачи
+    /// </summary>
     public class CreateTaskRequestValidator : AbstractValidator<CreateTaskRequest>
     {
         public CreateTaskRequestValidator()

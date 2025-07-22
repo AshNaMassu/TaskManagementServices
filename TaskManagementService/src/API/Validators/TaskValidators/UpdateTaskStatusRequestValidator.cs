@@ -4,6 +4,9 @@ using FluentValidation;
 
 namespace API.Validators.ActivityLogValidators
 {
+    /// <summary>
+    /// Валидатор для запроса обновления статуса задачи
+    /// </summary>
     public class UpdateTaskStatusRequestValidator : AbstractValidator<UpdateTaskStatusRequest>
     {
         public UpdateTaskStatusRequestValidator()

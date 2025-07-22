@@ -7,6 +7,9 @@ using Infrastructure.DTO;
 
 namespace API.Profiles
 {
+    /// <summary>
+    /// Профиль маппинга DTO и сущностей
+    /// </summary>
     public class MapProfile : Profile
     {
         public MapProfile()

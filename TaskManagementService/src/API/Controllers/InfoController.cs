@@ -5,6 +5,9 @@ using Application.Enums;
 
 namespace API.Controllers
 {
+    /// <summary>
+    /// Контроллер для проверки состояния системы
+    /// </summary>
     [Route("info")]
     [ApiController]
     public class InfoController : ControllerBase
@@ -16,6 +19,12 @@ namespace API.Controllers
             _healthCheckService = healthCheckService;
         }
 
+        /// <summary>
+        /// Проверяет состояние сервиса
+        /// </summary>
+        /// <returns>Результат проверки состояния сервиса</returns>
+        /// <response code="200">Сервис работает нормально</response>
+        /// <response code="503">Проблемы в работе сервиса</response>
         [HttpGet("healthcheck")]
         public async Task<IActionResult> HealthCheck()
         {

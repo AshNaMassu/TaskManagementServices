@@ -4,15 +4,25 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
 {
+    /// <summary>
+    /// Базовый контроллер для обработки результатов методов
+    /// </summary>
+    /// <typeparam name="TService">Тип сервиса</typeparam>
     public class BaseController<TService> : ControllerBase
     {
         protected readonly TService _service;
 
+        /// <summary>
+        /// Инициализирует базовый контроллер
+        /// </summary>
         public BaseController(TService service)
         {
             _service = service;
         }
 
+        /// <summary>
+        /// Обрабатывает результат операции без возвращаемого значения
+        /// </summary>
         protected IActionResult GetResponse(MethodResult methodResult, MethodType? type = null)
         {
             if (methodResult == null)
@@ -30,6 +40,9 @@ namespace API.Controllers
             };
         }
 
+        /// <summary>
+        /// Обрабатывает результат операции с возвращаемым значением
+        /// </summary>
         protected IActionResult GetResponse<T>(MethodResult<T> methodResult, MethodType? type = null)
         {
             if (methodResult == null)
@@ -47,9 +60,18 @@ namespace API.Controllers
             };
         }
 
+        /// <summary>
+        /// Тип HTTP-метода
+        /// </summary>
         protected enum MethodType
         {
+            /// <summary>
+            /// Создание ресурса
+            /// </summary>
             Create,
+            /// <summary>
+            /// Удаление ресурса
+            /// </summary>
             Delete
         }
     }

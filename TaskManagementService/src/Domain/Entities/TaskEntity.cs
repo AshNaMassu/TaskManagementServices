@@ -26,7 +26,15 @@
         /// Текущий статус задачи
         /// </summary>
         public string Status { get; set; }
+
+        /// <summary>
+        /// Дата создания задачи (устанавливается автоматически)
+        /// </summary>
         public DateTime CreatedAt { get; set; }
+
+        /// <summary>
+        /// Дата последнего обновления задачи (устанавливается автоматически)
+        /// </summary>
         public DateTime UpdatedAt { get; set; }
     }
 }
