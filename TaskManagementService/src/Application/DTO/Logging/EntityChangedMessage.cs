@@ -1,6 +1,4 @@
-﻿using System.Text.Json.Serialization;
-
-namespace Application.DTO.Logging
+﻿namespace Application.DTO.Logging
 {
     public class EntityChangedMessage
     {

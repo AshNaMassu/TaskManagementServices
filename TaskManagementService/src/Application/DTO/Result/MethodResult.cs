@@ -2,6 +2,10 @@
 
 namespace Application.DTO.Result
 {
+    /// <summary>
+    /// Результат выполнения метода
+    /// </summary>
+    /// <typeparam name="T">Тип возвращаемого значения</typeparam>
     public class MethodResult
     {
         public MethodResultType ResultType { get; }
@@ -34,8 +38,15 @@ namespace Application.DTO.Result
         }
     }
 
+    /// <summary>
+    /// Результат выполнения метода с возвращаемым значением
+    /// </summary>
+    /// <typeparam name="T">Тип возвращаемого значения</typeparam>
     public class MethodResult<T> : MethodResult
     {
+        /// <summary>
+        /// Возвращаемое значение (только для успешного результата)
+        /// </summary>
         public T Value { get; }
 
         protected MethodResult(MethodResultType resultType, string error, T value) : base(resultType, error)

@@ -3,6 +3,9 @@ using System.Text.Json.Serialization;
 
 namespace Application.DTO.Task
 {
+    // <summary>
+    /// Параметры фильтрации задач
+    /// </summary>
     public class FilteringTaskRequest
     {
         [JsonPropertyName("ids")]
@@ -29,10 +32,13 @@ namespace Application.DTO.Task
         [JsonPropertyName("updated_at_end")]
         public DateTime? UpdatedAtEnd { get; set; }
 
+        /// <summary>
+        /// Максимальное количество возвращаемых записей (по умолчанию 50)
+        /// </summary>
         [JsonPropertyName("limit")]
         public int Limit { get; set; } = 50;
 
-        [JsonPropertyName("offsett")]
+        [JsonPropertyName("offset")]
         public int Offset { get; set; }
     }
 }
