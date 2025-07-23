@@ -57,27 +57,23 @@ namespace Application.Tests.Services
                 Times.Once);
         }
 
-        [Fact]
-        public async Task Log_ShouldLogError_WhenMessageSendingFails()
+        [Theory]
+        [InlineData(null, 123, "Create")]
+        [InlineData("Task", 123, null)]
+        [InlineData("", 123, "Create")]
+        [InlineData("Task", 0, "Create")]
+        public async Task Log_ShouldThrowArgumentException_WhenMessagePropertiesAreInvalid(string entity, long entityId, string operation)
         {
             // Arrange
-            var testMessage = new EntityChangedMessage
+            var invalidMessage = new EntityChangedMessage
             {
-                Entity = "Task",
-                EntityId = 123,
-                Operation = "Create"
+                Entity = entity,
+                EntityId = entityId,
+                Operation = operation
             };
 
-            var exception = new Exception("Test exception");
-            _activityLogSenderMock
-                .Setup(x => x.SendMessage(It.IsAny<EntityChangedMessage>()))
-                .ThrowsAsync(exception);
-
-            // Act
-            await Assert.ThrowsAsync<Exception>(() => _service.Log(testMessage));
-
-            // Assert
-            VerifyLogErrorWasCalled(exception);
+            // Act & Assert
+            await Assert.ThrowsAsync<ArgumentException>(() => _service.Log(invalidMessage));
         }
     }
 }

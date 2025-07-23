@@ -5,7 +5,7 @@ namespace Application.DTO.Task
     public class TaskResponse
     {
         [JsonPropertyName("id")]
-        public int Id { get; set; }
+        public long Id { get; set; }
 
         [JsonPropertyName("title")]
         public string Title { get; set; }

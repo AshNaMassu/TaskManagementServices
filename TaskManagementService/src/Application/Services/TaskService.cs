@@ -76,6 +76,8 @@ namespace Application.Services
             }
             catch (NotFoundException ex)
             {
+                var errorMessage = $"Failed to delete task: {ex.Message}";
+                LogError(errorMessage, nameof(DeleteAsync));
                 return MethodResult.NotFound(ex.Message);
             }
             catch (Exception ex)
@@ -121,7 +123,8 @@ namespace Application.Services
             }
             catch (NotFoundException ex)
             {
-                LogError(ex.Message, nameof(GetAsync));
+                var errorMessage = $"Failed to get task: {ex.Message}";
+                LogError(errorMessage, nameof(GetAsync));
 
                 return MethodResult<TaskResponse>.NotFound(ex.Message);
             }
@@ -161,7 +164,8 @@ namespace Application.Services
             }
             catch (NotFoundException ex)
             {
-                LogError(ex.Message, nameof(UpdateAsync));
+                var errorMessage = $"Failed to update task: {ex.Message}";
+                LogError(errorMessage, nameof(UpdateAsync));
 
                 return MethodResult.NotFound(ex.Message);
             }
@@ -201,7 +205,8 @@ namespace Application.Services
             }
             catch (NotFoundException ex)
             {
-                LogError(ex.Message, nameof(UpdateStatusAsync));
+                var errorMessage = $"Failed to update task status: {ex.Message}";
+                LogError(errorMessage, nameof(UpdateStatusAsync));
                 return MethodResult.NotFound(ex.Message);
             }
             catch (Exception ex)
